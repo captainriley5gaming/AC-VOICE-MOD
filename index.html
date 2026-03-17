@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AC VOICE MOD - VR Edition</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-sky color="#050505"></a-sky>
+      <a-plane position="0 0 -4" rotation="-90 0 0" width="100" height="100" color="#111"></a-plane>
 
+      <a-text value="AC VOICE MOD" position="0 3.5 -4" align="center" color="#00FFCC" width="12" font="exo2bold"></a-text>
+      <a-text value="Advanced Audio Modulation" position="0 3 -4" align="center" color="#888" width="4"></a-text>
+
+      <a-entity id="selection-menu" position="0 1.5 -3">
+        <a-text value="SELECT YOUR QUEST MODEL" align="center" position="0 1.2 0" width="5" color="#FFF"></a-text>
+        
+        <a-box position="-1.2 0 0" width="1" height="0.6" depth="0.1" color="#333" class="clickable"
+               animation__mouseenter="property: scale; to: 1.1 1.1 1.1; dur: 200"
+               animation__mouseleave="property: scale; to: 1 1 1; dur: 200"
+               onclick="startACVoice('Quest 2')">
+          <a-text value="QUEST 2" align="center" position="0 0 0.1" width="4" color="#00FFCC"></a-text>
+        </a-box>
+
+        <a-box position="0 0 0" width="1" height="0.6" depth="0.1" color="#333" class="clickable"
+               animation__mouseenter="property: scale; to: 1.1 1.1 1.1; dur: 200"
+               animation__mouseleave="property: scale; to: 1 1 1; dur: 200"
+               onclick="startACVoice('Quest 3')">
+          <a-text value="QUEST 3" align="center" position="0 0 0.1" width="4" color="#00FFCC"></a-text>
+        </a-box>
+
+        <a-box position="1.2 0 0" width="1" height="0.6" depth="0.1" color="#333" class="clickable"
+               animation__mouseenter="property: scale; to: 1.1 1.1 1.1; dur: 200"
+               animation__mouseleave="property: scale; to: 1 1 1; dur: 200"
+               onclick="startACVoice('Quest Pro')">
+          <a-text value="QUEST PRO" align="center" position="0 0 0.1" width="4" color="#00FFCC"></a-text>
+        </a-box>
+      </a-entity>
+
+      <a-entity id="mod-menu" position="0 1.5 -3" visible="false">
+        <a-text id="status-text" value="AC MODS: READY" align="center" position="0 1.5 0" width="5" color="#00FFCC"></a-text>
+        
+        <a-box position="-0.8 0 0" color="#1a1a1a" onclick="setACMod('Giant')">
+          <a-text value="GIANT" align="center" position="0 0 0.1" width="4" color="#FF3300"></a-text>
+        </a-box>
+        
+        <a-box position="0.8 0 0" color="#1a1a1a" onclick="setACMod('Droid')">
+          <a-text value="DROID" align="center" position="0 0 0.1" width="4" color="#00CCFF"></a-text>
+        </a-box>
+
+        <a-text value="Speak into your headset mic to test" align="center" position="0 -1 0" width="3" color="#666"></a-text>
+      </a-entity>
+
+      <a-entity cursor="rayOrigin: mouse"></a-entity>
+      <a-entity oculus-touch-controls="hand: right"></a-entity>
+    </a-scene>
+
+    <script>
+      function startACVoice(model) {
+        document.getElementById('selection-menu').setAttribute('visible', 'false');
+        document.getElementById('mod-menu').setAttribute('visible', 'true');
+        document.getElementById('status-text').setAttribute('value', 'AC MODS: ' + model.toUpperCase());
+        
+        // Request Mic Access
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(stream => { console.log("AC Voice Input Active"); })
+          .catch(err => { alert("Please enable mic permissions in Quest settings!"); });
+      }
+
+      function setACMod(modName) {
+        console.log("Switching AC Mod to: " + modName);
+        document.getElementById('status-text').setAttribute('value', 'ACTIVE: ' + modName.toUpperCase());
+      }
+    </script>
+  </body>
+</html>
